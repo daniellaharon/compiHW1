@@ -1,7 +1,41 @@
 #include "tokens.hpp"
+#include "string"
+#include "iostream"
 
-std::string handle_string(char* str){
+std::string handle_hex(std::string str){
 
+}
+
+std::string handle_string(std::string str){
+    std::string output;
+    for(int i = 0; i < str.length(); ++i){
+        if(str[i]=='\n'||str[i]=='\r'||str[i]=='\t'==0){
+            output+=str[i];
+        }
+        if(str[i]=='\"'){
+            continue;
+        }
+        if(str[i]!='\\'){
+            output+=str[i];
+        }
+        else{
+            //hex value case
+            if(str[i+1]=='x'){
+                output+=handle_hex(str.substr(i+2,2));
+                i+=3;
+            }
+            if(str[i+1]=='0'){
+                output+="\0";
+                i+=1;
+            }
+            else{
+                //error escaping case
+                printf("Error undefined escape sequence %s\n", str[i+1]);
+                exit(0);
+            }
+        }
+
+    }
 }
 
 void showToken(const char* token){
@@ -19,6 +53,21 @@ void showToken(const char* token){
     }
     printf("%d %s %s\n", yylineno, token, yytext);
     return;
+}
+
+void print_unclosed_string(){
+    printf("Error unclosed string\n");
+    exit(0);
+}
+
+void print_zero_error(){
+    printf("Error 0\n");
+    exit(0);
+}
+
+void print_invalid_char(){
+    printf("Error unclosed string\n");
+    exit(0);
 }
 
 int main()
@@ -113,6 +162,12 @@ int main()
             case STRING:
                 showToken("STRING");
                 break;
+            case UNCLOSED_STRING:
+                print_unclosed_string();
+            case ZERO_ERROR:
+                print_zero_error();
+            case INVALID_CHAR:
+                print_invalid_char();
             default:
                 exit(0);
         }

@@ -38,7 +38,8 @@ continue                        return CONTINUE;
 {letter}+({letter}|{digit})*    return ID
 0|[1-9][0-9]*                   return NUM
 \"([^\\\"\n\r]|\\.)*\"          return STRING
-(0[0-9]+)                       {printf("Error 0\n"); exit(0);}
-\"([^\\\"]|\\.)*[\n\r<<EOF>>]*  {printf("Error unclosed string\n"); exit(0); }
+(0[0-9]+)                       return ZERO_ERROR
+\"([^\\\"]|\\.)*[\n\r<<EOF>>]*  return UNCLOSED_STRING
+.                               return INVALID_CHAR
 [\n\r\t]                        ;
 %%
