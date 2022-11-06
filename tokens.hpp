@@ -31,7 +31,10 @@
     COMMENT = 26,
     ID = 27,
     NUM = 28,
-    STRING = 29
+    STRING = 29,
+    ZERO_ERROR = 30,
+    UNCLOSED_STRING = 31,
+    INVALID_CHAR = 32
   };
   extern int yylineno;
   extern char* yytext;
