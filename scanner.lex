@@ -27,19 +27,19 @@ break                           return BREAK;
 continue                        return CONTINUE;
 ;                               return SC;
 ,                               return COMMA;
-\(                              return LPAREN
-\)                              return RPAREN
-\{                              return LBRACE
-\}                              return RBRACE
-=                               return ASSIGN
-==|!=|<|>|<=|>=                 return RELOP
-\+|\-|\*|\/                     return BINOP
-\/\/[^\r\n]*                    return COMMENT
-{letter}+({letter}|{digit})*    return ID
-0|[1-9][0-9]*                   return NUM
-\"([^\\\"\n\r]|\\.)*\"          return STRING
-(0[0-9]+)                       return ZERO_ERROR
-\"([^\\\"]|\\.)*[\r\n<<EOF>>]*  return UNCLOSED_STRING
+\(                              return LPAREN;
+\)                              return RPAREN;
+\{                              return LBRACE;
+\}                              return RBRACE;
+=                               return ASSIGN;
+==|!=|<|>|<=|>=                 return RELOP;
+\+|\-|\*|\/                     return BINOP;
+\/\/[^\r\n]*                    return COMMENT;
+{letter}+({letter}|{digit})*    return ID;
+0|[1-9][0-9]*                   return NUM;
+\"([^\\\"\n\r]|\\.)*\"          return STRING;
+(0[0-9]+)                       return ZERO_ERROR;
+\"([^\\\"]|\\.)*[\r\n<<EOF>>]*  return UNCLOSED_STRING;
 [\n\r\t]                        ;
-.                               return INVALID_CHAR
+.                               return INVALID_CHAR;
 %%
