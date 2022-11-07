@@ -39,7 +39,7 @@ continue                        return CONTINUE;
 0|[1-9][0-9]*                   return NUM
 \"([^\\\"\n\r]|\\.)*\"          return STRING
 (0[0-9]+)                       return ZERO_ERROR
-\"([^\\\"]|\\.)*[\n\r<<EOF>>]*  return UNCLOSED_STRING
-.                               return INVALID_CHAR
+\"([^\\\"]|\\.)*[\r\n<<EOF>>]*  return UNCLOSED_STRING
 [\n\r\t]                        ;
+.                               return INVALID_CHAR
 %%

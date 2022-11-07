@@ -2,8 +2,39 @@
 #include "string"
 #include "iostream"
 
-std::string handle_hex(std::string str){
-
+char handle_hex(const std::string& str){
+    bool not_valid = false;
+    std::string err;
+    for(int i = 0; i < str.length(); ++i){
+        if(!(std::isalnum(str[i]) || std::isalpha(str[i]))){
+            not_valid= true;
+            if(str[i]=='\"'){
+                break;
+            }
+        }
+        else{
+            err+=str[i];
+        }
+    }
+    if(not_valid){
+        printf("Error undefined escape sequence %s\n", ("x"+err).c_str());
+        exit(0);
+    }
+    int number;
+    try{
+      number = std::stoi(str, nullptr, 0x10);
+    }
+    catch(const std::invalid_argument& e) {
+        printf("Error undefined escape sequence %s\n", ("x"+str).c_str());
+        exit(0);
+    }
+    if (number>=0x00 && number<=0x7f){
+        return (char)number;
+    }
+    else{
+        printf("Error undefined escape sequence %s\n", ("x"+str).c_str());
+        exit(0);
+    }
 }
 
 std::string handle_string(std::string str){
@@ -15,27 +46,27 @@ std::string handle_string(std::string str){
         if(str[i]=='\"'){
             continue;
         }
-        if(str[i]!='\\'){
-            output+=str[i];
-        }
-        else{
+        if(str[i]=='\\'){
             //hex value case
             if(str[i+1]=='x'){
                 output+=handle_hex(str.substr(i+2,2));
                 i+=3;
             }
             if(str[i+1]=='0'){
-                output+="\0";
+                output+='\0';
                 i+=1;
             }
             else{
                 //error escaping case
-                printf("Error undefined escape sequence %s\n", str[i+1]);
+                printf("Error undefined escape sequence %c\n", str[i+1]);
                 exit(0);
             }
         }
-
+        else{
+            output+=str[i];
+        }
     }
+    return output;
 }
 
 void showToken(const char* token){
@@ -52,7 +83,6 @@ void showToken(const char* token){
         return;
     }
     printf("%d %s %s\n", yylineno, token, yytext);
-    return;
 }
 
 void print_unclosed_string(){
@@ -66,7 +96,7 @@ void print_zero_error(){
 }
 
 void print_invalid_char(){
-    printf("Error unclosed string\n");
+    printf("Error %c\n", yytext[0]);
     exit(0);
 }
 
