@@ -8,8 +8,10 @@ char handle_hex(const std::string& str){
     for(int i = 0; i < str.length(); ++i){
         if(!(std::isalnum(str[i]) || std::isalpha(str[i]))){
             not_valid= true;
+            //hex is shorter than 2 characters
             if(str[i]=='\"'){
-                break;
+                printf("Error undefined escape sequence %s\n", ("x"+err).c_str());
+                exit(0);
             }
         }
         else{
@@ -17,7 +19,7 @@ char handle_hex(const std::string& str){
         }
     }
     if(not_valid){
-        printf("Error undefined escape sequence %s\n", ("x"+err).c_str());
+        printf("Error undefined escape sequence %s\n", ("x"+str).c_str());
         exit(0);
     }
     int number;
